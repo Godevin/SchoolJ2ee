@@ -37,6 +37,7 @@ public class HomeController extends AbstractController {
     @Autowired
     private VideoService videoService;
 
+    
     @Autowired
     private ArticleService articleService;
 

@@ -40,5 +40,9 @@ public class ClazzDaoImpl extends AbstractDao<Clazz, Long> implements ClazzDao {
         }
 
     }
-
+    
+    	
+    
 }
+
+
