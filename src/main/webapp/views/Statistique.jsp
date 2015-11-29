@@ -42,35 +42,43 @@
                 <span>Statistiques</span>
             </h3>
             <div id="statClasses">
-                <div class="topClasses">
-                    <h4>Top 5 des classes</h4>
-                    <c:forEach items="${classes}" var="clazz">
-                        <div class="classInfo">
-                            <img src="<c:url value="${ clazz.clazz.img }" />" alt="${ clazz.clazz.name } avatar">
-                            <div class="classNameAndOccurence">${ clazz.clazz.name } : <span>${ clazz.occurences }</span></div>
-                        </div>
-                    </c:forEach>
-                </div>
+                <div class="topClazz">
+					<h4>Top 5 des Classes</h4>
+					<c:forEach items="${classes}" var="classe">
+					<div>
+						<div>${ classe.key.name } : <span>${ classe.value  }</span></div>
+					</div>
+					</c:forEach>
+				</div>
                 <div class="topRaces">
                     <h4>Top 5 des races</h4>
                     <c:forEach items="${races}" var="race">
-                        <div class="classInfo">
-                            <div class="classNameAndOccurence">${ race.race.name } : <span>${ race.occurences }</span></div>
+                        <div>
+                            <div>${ race.key.name } : <span>${ race.value }</span></div>
                         </div>
                     </c:forEach>
                 </div>
                 <div class="topSpecs">
                     <h4>Top 5 des specialisations</h4>
                     <c:forEach items="${specializations}" var="specialization">
-                        <div class="classInfo">
-                            <img src="<c:url value="${ specialization.specialization.img }" />" alt="${ specialization.specialization.name } avatar">
-                            <div class="classNameAndOccurence">${ specialization.specialization.name } : <span>${ specialization.occurences }</span></div>
+                        <div>
+                            <img src="<c:url value="${ specialization.key.img }" />" alt="${ specialization.key.name } avatar">
+                            <div>${ specialization.key.name } : <span>${ specialization.value }</span></div>
+                        </div>
+                    </c:forEach>
+                </div>
+                 <div class="UserNoAvatar">
+                    <h4>Liste des utilisateurs sans avatar (pseudo)</h4>
+                    <c:forEach items="${noavatar}" var="user">
+                        <div>
+                            <div>${user}</div>
                         </div>
                     </c:forEach>
                 </div>
             </div>
         </div>
     </div>
+
     <div id="footer-wrapper">
         <jsp:include page="portal/Footer.jsp"/>
     </div>

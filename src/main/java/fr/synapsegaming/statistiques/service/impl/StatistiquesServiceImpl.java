@@ -4,103 +4,94 @@ import fr.synapsegaming.statistiques.service.StatClazz;
 import fr.synapsegaming.statistiques.service.StatRaces;
 import fr.synapsegaming.statistiques.service.StatSpecialization;
 import fr.synapsegaming.statistiques.service.StatistiquesService;
+import fr.synapsegaming.user.entity.Clazz;
+import fr.synapsegaming.user.entity.Race;
 import fr.synapsegaming.user.dao.UserDao;
 import fr.synapsegaming.user.entity.Specialization;
 import fr.synapsegaming.user.entity.User;
+import fr.synapsegaming.user.service.UserService;
+import fr.synapsegaming.utils.Comparateur;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("StatistiquesService")
 public class StatistiquesServiceImpl implements StatistiquesService {
-
+    
     @Autowired
-    private UserDao userDao;
+    UserService userService;
 
     @Override
-    public List<StatClazz> listFiveClassesMostPlayed() {
+    public Map listFiveClassesMostPlayed() {
 
-        List<User> users = userDao.list(User.class);
-        List<StatClazz> classes = new ArrayList<>();
+    HashMap<Clazz, Integer> Statsclazz = new HashMap <Clazz, Integer>();
 
-        for(int i = 0; i<users.size(); i++){
-            boolean contains = false;
-            for (int j = 0; j<classes.size(); j++){
-                if (classes.get(j).getClazz().getId() == users.get(i).getClazz().getId()) {
-                    contains = true;
-                    classes.get(j).setOccurences(classes.get(j).getOccurences() + 1);
-                }
-            }
-            if (!contains) {
-                StatClazz stat = new StatClazz();
-                stat.setClazz(users.get(i).getClazz());
-                stat.setOccurences(1);
-                classes.add(stat);
-            }
-        }
-
-        Collections.sort(classes, new StatClazz().reversed());
-
-        return classes.subList(0, 5);
+    for(User u : userService.getAllUsers()){
+		if(Statsclazz.containsKey(u.getClazz())){
+			Statsclazz.put(u.getClazz(), Statsclazz.get(u.getClazz())+1);
+		} else{
+			Statsclazz.put(u.getClazz(), 1);
+		}
+	}
+    
+    Comparateur Comp5Classes = new Comparateur(Statsclazz);
+    
+       return Comp5Classes.sortAndResize(5);
 
     }
 
     @Override
-    public List<StatRaces> listFiveRacesMostPlayed() {
+    public Map listFiveRacesMostPlayed() {
 
-        List<User> users = userDao.list(User.class);
-        List<StatRaces> races = new ArrayList<>();
+    	 HashMap<Race, Integer> StatsRace = new HashMap <Race, Integer>();
 
-        for(int i = 0; i<users.size(); i++){
-            boolean contains = false;
-            for (int j = 0; j<races.size(); j++){
-                if (races.get(j).getRace().getId() == users.get(i).getRace().getId()) {
-                    contains = true;
-                    races.get(j).setOccurences(races.get(j).getOccurences() + 1);
-                }
-            }
-            if (!contains) {
-                StatRaces stat = new StatRaces();
-                stat.setRace(users.get(i).getRace());
-                stat.setOccurences(1);
-                races.add(stat);
-            }
-        }
-
-        Collections.sort(races, new StatRaces().reversed());
-
-        return races.subList(0, 5);
-
+    	    for(User u : userService.getAllUsers()){
+    			if(StatsRace.containsKey(u.getRace())){
+    				StatsRace.put(u.getRace(), StatsRace.get(u.getRace())+1);
+    			} else{
+    				StatsRace.put(u.getRace(), 1);
+    			}
+    		}
+    	    
+    	    Comparateur Comp5Race = new Comparateur(StatsRace);
+    	    
+    	       return Comp5Race.sortAndResize(5);
     }
 
     @Override
-    public List<StatSpecialization> listFiveSpecializationsMostPlayed() {
+    public Map listFiveSpecializationsMostPlayed() {
 
-        List<User> users = userDao.list(User.class);
-        List<StatSpecialization> specializations = new ArrayList<>();
+    	 HashMap<Specialization, Integer> StatsSpecialization = new HashMap <Specialization, Integer>();
 
-        for(int i = 0; i<users.size(); i++){
-            boolean contains = false;
-            for (int j = 0; j<specializations.size(); j++){
-                if (specializations.get(j).getSpecialization().getId() == users.get(i).getSpec().getId()) {
-                    contains = true;
-                    specializations.get(j).setOccurences(specializations.get(j).getOccurences() + 1);
-                }
-            }
-            if (!contains) {
-                StatSpecialization stat = new StatSpecialization();
-                stat.setSpecialization(users.get(i).getSpec());
-                stat.setOccurences(1);
-                specializations.add(stat);
-            }
-        }
-
-        Collections.sort(specializations, new StatSpecialization().reversed());
-
-        return specializations.subList(0, 5);
+ 	    for(User u : userService.getAllUsers()){
+ 			if(StatsSpecialization.containsKey(u.getSpec())){
+ 				StatsSpecialization.put(u.getSpec(), StatsSpecialization.get(u.getSpec())+1);
+ 			} else{
+ 				StatsSpecialization.put(u.getSpec(), 1);
+ 			}
+ 		}
+ 	    
+ 	    Comparateur Comp5Specialization = new Comparateur(StatsSpecialization);
+ 	    
+ 	       return Comp5Specialization.sortAndResize(5);
 
     }
+
+	@Override
+	public ArrayList listUserWithoutAvatar() {
+
+		ArrayList<String> arrList = new ArrayList<String>();
+	 	    for(User u : userService.getAllUsers()){
+	 			if(u.getForumAvatar().equals("/resources/img/default_avatar.png")){
+	 				arrList.add(u.getNickname());
+	 			} 
+	 		}
+	 	   return arrList;
+	}
 }

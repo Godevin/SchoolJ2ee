@@ -1,6 +1,8 @@
 package fr.synapsegaming.statistiques.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import fr.synapsegaming.user.entity.Clazz;
 
@@ -10,10 +12,12 @@ public interface StatistiquesService {
 	 * Liste les 5 classes les plus jouées
 	 * @return Liste de classes
 	 */
-	 List<StatClazz> listFiveClassesMostPlayed();
+	 Map listFiveClassesMostPlayed();
 
-	 List<StatRaces> listFiveRacesMostPlayed();
+	 Map listFiveRacesMostPlayed();
 
-	 List<StatSpecialization> listFiveSpecializationsMostPlayed();
+	 Map listFiveSpecializationsMostPlayed();
+	 
+	 ArrayList listUserWithoutAvatar();
 
 }
